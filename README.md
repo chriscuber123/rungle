@@ -12,7 +12,7 @@ Find the shortest path between two words by changing one letter at a time, using
 
 A word ladder (also called Doublets, invented by Lewis Carroll in 1877) is a sequence of words where each step changes exactly one letter and every intermediate word is a real dictionary word. For example: **cold** → cord → card → ward → **warm**. This library finds the shortest such ladder between any two words using breadth-first search over a word graph you build from any dictionary you provide.
 
-See it in action in the daily [Poople word ladder game](https://poople.io/).
+See it in action in the daily [Poople](https://pooplegame.com/).
 
 ---
 
@@ -132,7 +132,7 @@ The library models the word puzzle as a graph where each node is a word and two 
 
 ## Live demo
 
-This engine powers the daily [Poople word ladder game](https://poople.io/), a four-letter word ladder game with a new puzzle every day.
+This engine powers the daily [Poople word ladder game](https://pooplegame.com/), a four-letter word ladder game with a new puzzle every day.
 
 ## License
 

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A tiny, dependency-free TypeScript word ladder engine: build a word graph from any dictionary and find the shortest ladder between two words with breadth-first search.",
   "keywords": ["word-ladder","word-ladder-solver","word-ladder-algorithm","shortest-path","bfs","word-graph","doublets","word-puzzle","four-letter-words","typescript","poople"],
-  "homepage": "https://poople.io/",
+  "homepage": "https://pooplegame.com/",
   "repository": { "type": "git", "url": "git+https://github.com/horushe93/poople.git" },
   "bugs": { "url": "https://github.com/horushe93/poople/issues" },
   "license": "MIT",
