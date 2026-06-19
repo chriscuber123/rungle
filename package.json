@@ -1,0 +1,28 @@
+{
+  "name": "poople",
+  "version": "0.1.0",
+  "description": "A tiny, dependency-free TypeScript word ladder engine: build a word graph from any dictionary and find the shortest ladder between two words with breadth-first search.",
+  "keywords": ["word-ladder","word-ladder-solver","word-ladder-algorithm","shortest-path","bfs","word-graph","doublets","word-puzzle","four-letter-words","typescript","poople"],
+  "homepage": "https://poople.io/",
+  "repository": { "type": "git", "url": "git+https://github.com/horushe93/poople.git" },
+  "bugs": { "url": "https://github.com/horushe93/poople/issues" },
+  "license": "MIT",
+  "author": "horushe93",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "files": ["dist","README.md","LICENSE"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "demo": "tsx examples/demo.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": { "node": ">=18" },
+  "devDependencies": { "typescript": "^5.6.0", "tsx": "^4.19.0", "vitest": "^2.1.0" }
+}
