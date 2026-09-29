@@ -12,5 +12,5 @@ export function shareText(opts: {
   const rows = path.map((word) =>
     [...word].map((ch, i) => (ch === goal[i] ? "🟩" : "⬜")).join("")
   );
-  return [`Rungle #${puzzle} ${path.length - 1}/${par}`, ...rows, "", url].join("\n");
+  return [`RUNGLE #${puzzle} ${path.length - 1}/${par}`, ...rows, "", url].join("\n");
 }
