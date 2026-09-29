@@ -1,14 +1,11 @@
 import { WordLadder } from "../src/index.js";
 import WORDS from "./words.generated.json";
 import { GOAL, LAUNCH_DATE, MIN_PAR, MAX_PAR, START_POOL } from "./config.js";
-import { dailyPick, dayOf, easternDay } from "./daily.js";
+import { dailyPick, dayOf, easternDay, eligibleStarts } from "./daily.js";
 
 const ladder = new WordLadder([...WORDS, GOAL]);
 const distances = ladder.distancesTo(GOAL);
-const pool = START_POOL.filter((w) => {
-  const d = distances.get(w);
-  return d !== undefined && d >= MIN_PAR && d <= MAX_PAR;
-});
+const pool = eligibleStarts(START_POOL, distances, MIN_PAR, MAX_PAR);
 if (pool.length === 0) throw new Error(`No start words ${MIN_PAR}-${MAX_PAR} steps from ${GOAL}`);
 
 const today = easternDay(new Date());

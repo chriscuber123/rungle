@@ -29,6 +29,8 @@ The daily word is chosen in each player's browser from the current date in New Y
 
 Changing `START_POOL`, `GOAL` or the word list changes which word lands on which day, so upcoming puzzles will shuffle.
 
+[`test/puzzle.test.ts`](./test/puzzle.test.ts) checks the config on every push: `GOAL` must be in the word list, and every `START_POOL` word must have a real ladder to it within the par range. It also walks a valid ladder for each of the next two years of daily puzzles. If any check fails, the deploy is blocked and the live site stays as it was. Run `pnpm test` before pushing to catch problems early.
+
 ## Word list
 
 Guesses are checked against [`site/words.txt`](./site/words.txt), about 5,600 four-letter Scrabble words. The file is whitespace-separated and case-insensitive, so you can paste in a new list as-is.

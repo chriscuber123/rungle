@@ -31,6 +31,22 @@ function mulberry32(seed: number): () => number {
 }
 
 /**
+ * Pool words whose shortest ladder to the goal is between minPar and maxPar
+ * steps. `distances` is the goal's distance map (WordLadder.distancesTo).
+ */
+export function eligibleStarts(
+  pool: readonly string[],
+  distances: ReadonlyMap<string, number>,
+  minPar: number,
+  maxPar: number
+): string[] {
+  return pool.filter((w) => {
+    const d = distances.get(w);
+    return d !== undefined && d >= minPar && d <= maxPar;
+  });
+}
+
+/**
  * Word for puzzle number `n` (0 = launch day). The first pool word is always
  * puzzle 0; the rest are shuffled once and cycled, so no word repeats until
  * the whole pool has been used.
