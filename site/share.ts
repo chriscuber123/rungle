@@ -10,7 +10,7 @@ export function shareText(opts: {
 }): string {
   const { puzzle, path, goal, par, url } = opts;
   const rows = path.map((word) =>
-    [...word].map((ch, i) => (ch === goal[i] ? "🟩" : "⬜")).join("")
+    [...word].map((ch, i) => (ch === goal[i] ? "🔫" : "⬜")).join("")
   );
-  return [`RUNGLE #${puzzle} ${path.length - 1}/${par}`, ...rows, "", url].join("\n");
+  return [`ruNgle #${puzzle} ${path.length - 1}/${par}`, ...rows, "", url].join("\n");
 }

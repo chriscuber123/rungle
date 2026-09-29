@@ -12,13 +12,13 @@ describe("shareText", () => {
     });
     expect(text).toBe(
       [
-        "RUNGLE #1 5/5",
+        "ruNgle #1 5/5",
         "⬜⬜⬜⬜",
         "⬜⬜⬜⬜",
-        "⬜🟩⬜⬜",
-        "⬜🟩🟩⬜",
-        "🟩🟩🟩⬜",
-        "🟩🟩🟩🟩",
+        "⬜🔫⬜⬜",
+        "⬜🔫🔫⬜",
+        "🔫🔫🔫⬜",
+        "🔫🔫🔫🔫",
         "",
         "https://chriscuber123.github.io/rungle/",
       ].join("\n")
@@ -27,6 +27,6 @@ describe("shareText", () => {
 
   it("shows steps over par when the climb is longer than par", () => {
     const text = shareText({ puzzle: 7, path: ["a", "b", "c"], goal: "z", par: 1, url: "u" });
-    expect(text.split("\n")[0]).toBe("RUNGLE #7 2/1");
+    expect(text.split("\n")[0]).toBe("ruNgle #7 2/1");
   });
 });

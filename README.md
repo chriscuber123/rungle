@@ -1,4 +1,4 @@
-# RUNGLE
+# ruNgle
 
 A daily word ladder puzzle: climb from the day's start word to **RUNG** by changing one letter at a time. Every step has to be a real four-letter word, and a new start word arrives every day at midnight US Eastern time.
 
@@ -17,18 +17,18 @@ Letters that are already in the right place for RUNG turn green. Use **Undo** to
 When you reach RUNG, hit **Share** to copy a spoiler-free result card:
 
 ```
-RUNGLE #1 5/5
+ruNgle #1 5/5
 ⬜⬜⬜⬜
 ⬜⬜⬜⬜
-⬜🟩⬜⬜
-⬜🟩🟩⬜
-🟩🟩🟩⬜
-🟩🟩🟩🟩
+⬜🔫⬜⬜
+⬜🔫🔫⬜
+🔫🔫🔫⬜
+🔫🔫🔫🔫
 
 https://chriscuber123.github.io/rungle/
 ```
 
-Each row is one word of your ladder, with 🟩 for letters that already match RUNG in that position.
+Each row is one word of your ladder, with 🔫 for letters that already match RUNG in that position.
 
 ## Changing the puzzle
 
@@ -69,7 +69,7 @@ To preview locally, serve `site/dist` with any static file server, for example `
 
 ## How it works
 
-RUNGLE is built on the [poople](https://github.com/horushe93/poople) word ladder engine, a small TypeScript library that lives in [`src/`](./src). It treats every word as a node in a graph, with an edge between words that differ by one letter:
+ruNgle is built on the [poople](https://github.com/horushe93/poople) word ladder engine, a small TypeScript library that lives in [`src/`](./src). It treats every word as a node in a graph, with an edge between words that differ by one letter:
 
 - `isValidStep` checks each guess.
 - `distancesTo("rung")` runs one breadth-first search from the goal to compute par.
