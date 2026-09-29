@@ -1,4 +1,5 @@
 // Builds the static game site into site/dist for GitHub Pages.
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -6,17 +7,11 @@ import { build } from "esbuild";
 
 const siteDir = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.join(siteDir, "dist");
-// Keep offensive words out of guesses and revealed solutions.
-const BLOCKED = new Set([
-  "cunt", "fuck", "shit", "piss", "cock", "dick", "twat", "tits", "dyke",
-  "fags", "homo", "gook", "coon", "wank", "jizz", "jism", "gism", "cums",
-  "slut", "clit", "milf", "quim", "pwns",
-]);
 // words.txt holds whitespace-separated four-letter words, in any case.
 const words = new Set();
 for (const token of fs.readFileSync(path.join(siteDir, "words.txt"), "utf8").split(/\s+/)) {
   const w = token.toLowerCase();
-  if (/^[a-z]{4}$/.test(w) && !BLOCKED.has(w)) words.add(w);
+  if (/^[a-z]{4}$/.test(w)) words.add(w);
 }
 fs.writeFileSync(
   path.join(siteDir, "words.generated.json"),
@@ -33,5 +28,17 @@ await build({
   target: "es2020",
   outfile: path.join(outDir, "app.js"),
 });
-fs.copyFileSync(path.join(siteDir, "index.html"), path.join(outDir, "index.html"));
+// Version the script URL by content so browsers never pair a new page with a
+// stale cached app.js (GitHub Pages caches files for 10 minutes).
+const hash = crypto
+  .createHash("sha256")
+  .update(fs.readFileSync(path.join(outDir, "app.js")))
+  .digest("hex")
+  .slice(0, 10);
+const html = fs.readFileSync(path.join(siteDir, "index.html"), "utf8");
+if (!html.includes('src="./app.js"')) throw new Error('index.html must load src="./app.js"');
+fs.writeFileSync(
+  path.join(outDir, "index.html"),
+  html.replace('src="./app.js"', `src="./app.js?v=${hash}"`)
+);
 console.log(`Built site/dist with ${words.size} words.`);

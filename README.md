@@ -27,8 +27,7 @@ Edit them, commit, and push to `main`. The site rebuilds and redeploys automatic
 
 ## Word list
 
-Guesses are checked against [`site/words.txt`](./site/words.txt), about 5,600 four-letter Scrabble words. The file is whitespace-separated and case-insensitive, so you can paste in a new list as-is. A small blocklist in [`site/build.mjs`](./site/build.mjs) filters out offensive words.
-
+Guesses are checked against [`site/words.txt`](./site/words.txt), about 5,600 four-letter Scrabble words. The file is whitespace-separated and case-insensitive, so you can paste in a new list as-is.
 ## Development
 
 Requires Node 18+ and pnpm (or run `corepack pnpm` if pnpm isn't installed).
