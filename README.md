@@ -1,6 +1,6 @@
 # ruNgle
 
-A daily word ladder puzzle: climb from the day's start word to **RUNG** by changing one letter at a time. Every step has to be a real four-letter word, and a new start word arrives every day at midnight US Eastern time.
+A daily word ladder puzzle: climb from the day's start word to **RUNG** by changing one letter at a time.
 
 **Play it:** https://chriscuber123.github.io/rungle/
 
