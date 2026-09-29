@@ -56,6 +56,12 @@
     #message { min-height: 1.5em; margin: 0.75rem 0 0; }
     #message.error { color: var(--bad); }
     #message.win { color: var(--good); font-weight: 600; }
+    #share { margin-top: 0.75rem; }
+    #share-text {
+      margin: 0 0 0.75rem; padding: 0.75rem 1rem; white-space: pre-wrap;
+      font: 1rem/1.35 ui-monospace, "Segoe UI Emoji", "Apple Color Emoji", monospace;
+      background: var(--tile); border: 2px solid var(--line); border-radius: 0.4rem;
+    }
     footer { margin-top: 2.5rem; font-size: 0.8rem; color: var(--muted); }
     footer a { color: inherit; }
   </style>
@@ -79,6 +85,10 @@
       <button type="button" id="reveal" class="secondary">Show solution</button>
     </div>
     <p id="message" role="status"></p>
+    <div id="share" hidden>
+      <pre id="share-text"></pre>
+      <button type="button" id="share-copy">Share</button>
+    </div>
     <footer>A new start word every day at midnight Eastern.<br>Built on the <a href="https://github.com/horushe93/poople">poople</a> word ladder engine.</footer>
   </main>
   <script type="module" src="./app.js"></script>

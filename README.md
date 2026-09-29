@@ -14,6 +14,22 @@ A daily word ladder puzzle: climb from the day's start word to **RUNG** by chang
 
 Letters that are already in the right place for RUNG turn green. Use **Undo** to step back, or **Show solution** to reveal one shortest ladder.
 
+When you reach RUNG, hit **Share** to copy a spoiler-free result card:
+
+```
+Rungle #1 5/5
+⬜⬜⬜⬜
+⬜⬜⬜⬜
+⬜🟩⬜⬜
+⬜🟩🟩⬜
+🟩🟩🟩⬜
+🟩🟩🟩🟩
+
+https://chriscuber123.github.io/rungle/
+```
+
+Each row is one word of your ladder, with 🟩 for letters that already match RUNG in that position.
+
 ## Changing the puzzle
 
 Everything lives in [`site/config.ts`](./site/config.ts):

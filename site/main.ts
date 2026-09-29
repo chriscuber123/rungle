@@ -2,6 +2,7 @@ import { WordLadder } from "../src/index.js";
 import WORDS from "./words.generated.json";
 import { GOAL, LAUNCH_DATE, MIN_PAR, MAX_PAR, START_POOL } from "./config.js";
 import { dailyPick, dayOf, easternDay, eligibleStarts } from "./daily.js";
+import { shareText } from "./share.js";
 
 const ladder = new WordLadder([...WORDS, GOAL]);
 const distances = ladder.distancesTo(GOAL);
@@ -25,6 +26,9 @@ const input = $<HTMLInputElement>("guess");
 const message = $<HTMLParagraphElement>("message");
 const undoBtn = $<HTMLButtonElement>("undo");
 const revealBtn = $<HTMLButtonElement>("reveal");
+const sharePanel = $<HTMLDivElement>("share");
+const shareCard = $<HTMLPreElement>("share-text");
+const shareBtn = $<HTMLButtonElement>("share-copy");
 
 $("start").textContent = START;
 $("goal").textContent = GOAL;
@@ -84,6 +88,14 @@ form.addEventListener("submit", (e) => {
         : `You reached the top in ${steps} steps (par is ${par}).`,
       "win"
     );
+    shareCard.textContent = shareText({
+      puzzle: puzzleIndex + 1,
+      path,
+      goal: GOAL,
+      par,
+      url: location.origin + location.pathname,
+    });
+    sharePanel.hidden = false;
   } else {
     say("");
   }
@@ -102,6 +114,18 @@ revealBtn.addEventListener("click", () => {
   const best = ladder.shortestPath(START, GOAL)!;
   say(`One ${par}-step solution:`);
   render(best);
+});
+
+shareBtn.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(shareCard.textContent ?? "");
+    shareBtn.textContent = "Copied!";
+  } catch {
+    // Clipboard blocked: select the card so the player can copy it by hand.
+    getSelection()?.selectAllChildren(shareCard);
+    shareBtn.textContent = "Press Ctrl+C / ⌘C to copy";
+  }
+  setTimeout(() => (shareBtn.textContent = "Share"), 2000);
 });
 
 render();
