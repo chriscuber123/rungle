@@ -12,7 +12,7 @@ A word ladder puzzle: climb from **WORD** to **RUNG** by changing one letter at 
 2. Keep climbing until you reach **RUNG**.
 3. Try to match **par**, the fewest steps possible. For this puzzle, par is **5**.
 
-Changed letters are highlighted on each rung. Use **Undo** to step back, or **Show solution** to reveal one shortest ladder.
+Letters that are already in the right place for RUNG turn green. Use **Undo** to step back, or **Show solution** to reveal one shortest ladder.
 
 ## Changing the puzzle
 

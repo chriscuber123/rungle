@@ -7,13 +7,13 @@
   <style>
     :root {
       --bg: #faf8f4; --fg: #22201c; --muted: #6f6a61; --line: #ddd7cc;
-      --tile: #fff; --accent: #c2410c; --good: #15803d; --bad: #b91c1c;
+      --tile: #fff; --accent: #c2410c; --good: #15803d; --on-good: #fff; --bad: #b91c1c;
       color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #1a1917; --fg: #eeeae3; --muted: #a39e94; --line: #3a3833;
-        --tile: #262522; --accent: #fb923c; --good: #4ade80; --bad: #f87171;
+        --tile: #262522; --accent: #fb923c; --good: #4ade80; --on-good: #052e16; --bad: #f87171;
         color-scheme: dark;
       }
     }
@@ -35,9 +35,8 @@
       background: var(--tile); border: 2px solid var(--line); border-radius: 0.4rem;
       font-weight: 700; font-size: 1.4rem; text-transform: uppercase;
     }
-    .tile.changed { border-color: var(--accent); color: var(--accent); }
     .rung.start .tile { border-color: var(--fg); }
-    .rung.goal .tile { border-color: var(--good); color: var(--good); }
+    .tile.match { background: var(--good); border-color: var(--good); color: var(--on-good); }
     .rung.ghost .tile { border-style: dashed; color: var(--muted); background: transparent; }
     .rung.target { opacity: 0.55; }
     form { display: flex; gap: 0.5rem; }

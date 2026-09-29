@@ -21,13 +21,13 @@ $("par").textContent = String(par);
 let path = [START];
 let finished = false;
 
-function wordRow(word: string, prev: string | undefined, cls: string): HTMLLIElement {
+function wordRow(word: string, cls: string): HTMLLIElement {
   const li = document.createElement("li");
   li.className = `rung ${cls}`;
   [...word].forEach((ch, i) => {
     const tile = document.createElement("span");
     tile.className = "tile";
-    if (prev && prev[i] !== ch) tile.classList.add("changed");
+    if (ch === GOAL[i]) tile.classList.add("match");
     tile.textContent = ch;
     li.append(tile);
   });
@@ -37,13 +37,10 @@ function wordRow(word: string, prev: string | undefined, cls: string): HTMLLIEle
 function render(solution?: string[]): void {
   const rows = solution ?? path;
   rungsEl.replaceChildren(
-    ...rows.map((w, i) =>
-      wordRow(w, rows[i - 1], i === 0 ? "start" : w === GOAL ? "goal" : "")
-    )
+    ...rows.map((w, i) => wordRow(w, i === 0 ? "start" : w === GOAL ? "goal" : ""))
   );
   if (!finished) {
-    const ghost = wordRow("????", undefined, "ghost");
-    rungsEl.append(ghost, wordRow(GOAL, undefined, "goal target"));
+    rungsEl.append(wordRow("????", "ghost"), wordRow(GOAL, "goal target"));
   }
   $("steps").textContent = String(path.length - 1);
   undoBtn.disabled = finished || path.length === 1;
