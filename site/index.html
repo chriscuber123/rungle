@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Poople — Climb to RUNG</title>
+  <title>Rungle</title>
   <style>
     :root {
       --bg: #faf8f4; --fg: #22201c; --muted: #6f6a61; --line: #ddd7cc;
@@ -62,9 +62,10 @@
 </head>
 <body>
   <main>
-    <h1>Poople</h1>
+    <h1>Rungle</h1>
     <p class="sub">Climb from <strong id="start"></strong> to <strong id="goal"></strong>, changing one letter at a time.</p>
     <div class="stats">
+      <span>Puzzle <b id="puzzle"></b></span>
       <span>Steps <b id="steps">0</b></span>
       <span>Par <b id="par"></b></span>
     </div>
@@ -78,7 +79,7 @@
       <button type="button" id="reveal" class="secondary">Show solution</button>
     </div>
     <p id="message" role="status"></p>
-    <footer>Built on the <a href="https://github.com/horushe93/poople">poople</a> word ladder engine.</footer>
+    <footer>A new start word every day at midnight Eastern.<br>Built on the <a href="https://github.com/horushe93/poople">poople</a> word ladder engine.</footer>
   </main>
   <script type="module" src="./app.js"></script>
 </body>

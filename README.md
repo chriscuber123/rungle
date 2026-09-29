@@ -1,6 +1,6 @@
 # Rungle
 
-A word ladder puzzle: climb from **WORD** to **RUNG** by changing one letter at a time. Every step has to be a real four-letter word.
+A daily word ladder puzzle: climb from the day's start word to **RUNG** by changing one letter at a time. Every step has to be a real four-letter word, and a new start word arrives every day at midnight US Eastern time.
 
 **Play it:** https://chriscuber123.github.io/rungle/
 
@@ -8,26 +8,31 @@ A word ladder puzzle: climb from **WORD** to **RUNG** by changing one letter at 
 
 ## How to play
 
-1. You start on **WORD**. Type a four-letter word that differs from the current word by exactly one letter.
+1. Start on today's word. Type a four-letter word that differs from the current word by exactly one letter.
 2. Keep climbing until you reach **RUNG**.
-3. Try to match **par**, the fewest steps possible. For this puzzle, par is **5**.
+3. Try to match **par**, the fewest steps possible (5 or 6, depending on the day).
 
 Letters that are already in the right place for RUNG turn green. Use **Undo** to step back, or **Show solution** to reveal one shortest ladder.
 
 ## Changing the puzzle
 
-The start and goal words live in [`site/config.ts`](./site/config.ts):
+Everything lives in [`site/config.ts`](./site/config.ts):
 
-```typescript
-export const GOAL = "rung";
-export const START = "word";
-```
+| Setting | What it does |
+|---|---|
+| `GOAL` | The word every ladder climbs to (`"rung"`). |
+| `LAUNCH_DATE` | The date of puzzle #1 (`"2026-09-28"`). |
+| `START_POOL` | Candidate start words. The first one is used on launch day; the rest rotate in a fixed shuffled order, so no word repeats until the whole pool has been used (about 200 days). |
+| `MIN_PAR` / `MAX_PAR` | Pool words outside this par range are skipped automatically. |
 
-Edit them, commit, and push to `main`. The site rebuilds and redeploys automatically in about a minute. Par is computed from the word list, so pick a start word that can actually reach the goal. If no ladder exists, the game won't load.
+The daily word is chosen in each player's browser from the current date in New York (`site/daily.ts`), so everyone sees the same puzzle and no redeploy is needed when the day changes. To change the settings, edit the file, commit, and push to `main`; the site redeploys in about a minute.
+
+Changing `START_POOL`, `GOAL` or the word list changes which word lands on which day, so upcoming puzzles will shuffle.
 
 ## Word list
 
 Guesses are checked against [`site/words.txt`](./site/words.txt), about 5,600 four-letter Scrabble words. The file is whitespace-separated and case-insensitive, so you can paste in a new list as-is.
+
 ## Development
 
 Requires Node 18+ and pnpm (or run `corepack pnpm` if pnpm isn't installed).
@@ -35,7 +40,7 @@ Requires Node 18+ and pnpm (or run `corepack pnpm` if pnpm isn't installed).
 ```bash
 pnpm install
 pnpm run site:build   # builds the game into site/dist
-pnpm test             # runs the engine's tests
+pnpm test             # runs the engine and daily-rotation tests
 ```
 
 To preview locally, serve `site/dist` with any static file server, for example `npx serve site/dist`.

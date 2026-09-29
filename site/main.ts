@@ -1,10 +1,25 @@
 import { WordLadder } from "../src/index.js";
 import WORDS from "./words.generated.json";
-import { GOAL, START } from "./config.js";
+import { GOAL, LAUNCH_DATE, MIN_PAR, MAX_PAR, START_POOL } from "./config.js";
+import { dailyPick, dayOf, easternDay } from "./daily.js";
 
-const ladder = new WordLadder([...WORDS, START, GOAL]);
-const par = ladder.distancesTo(GOAL).get(START);
-if (par === undefined) throw new Error(`No ladder from ${START} to ${GOAL}`);
+const ladder = new WordLadder([...WORDS, GOAL]);
+const distances = ladder.distancesTo(GOAL);
+const pool = START_POOL.filter((w) => {
+  const d = distances.get(w);
+  return d !== undefined && d >= MIN_PAR && d <= MAX_PAR;
+});
+if (pool.length === 0) throw new Error(`No start words ${MIN_PAR}-${MAX_PAR} steps from ${GOAL}`);
+
+const today = easternDay(new Date());
+const puzzleIndex = today - dayOf(LAUNCH_DATE);
+const START = dailyPick(pool, puzzleIndex);
+const par = distances.get(START)!;
+
+// If the tab stays open past midnight ET, load the new puzzle.
+setInterval(() => {
+  if (easternDay(new Date()) !== today) location.reload();
+}, 60_000);
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const rungsEl = $<HTMLOListElement>("rungs");
@@ -17,6 +32,7 @@ const revealBtn = $<HTMLButtonElement>("reveal");
 $("start").textContent = START;
 $("goal").textContent = GOAL;
 $("par").textContent = String(par);
+$("puzzle").textContent = `#${puzzleIndex + 1}`;
 
 let path = [START];
 let finished = false;
