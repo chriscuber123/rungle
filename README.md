@@ -1,139 +1,60 @@
-# poople
+# Rungle
 
-A tiny, dependency-free TypeScript word ladder engine.
+A word ladder puzzle: climb from **WORD** to **RUNG** by changing one letter at a time. Every step has to be a real four-letter word.
 
-Find the shortest path between two words by changing one letter at a time, using any dictionary you supply.
-
-[![npm version](https://img.shields.io/npm/v/poople.svg)](https://www.npmjs.com/package/poople)
-[![license](https://img.shields.io/npm/l/poople.svg)](https://github.com/horushe93/poople/blob/main/LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/horushe93/poople/ci.yml?label=CI)](https://github.com/horushe93/poople/actions)
+**Play it:** https://chriscuber123.github.io/rungle/
 
 ---
 
-A word ladder (also called Doublets, invented by Lewis Carroll in 1877) is a sequence of words where each step changes exactly one letter and every intermediate word is a real dictionary word. For example: **cold** → cord → card → ward → **warm**. This library finds the shortest such ladder between any two words using breadth-first search over a word graph you build from any dictionary you provide.
+## How to play
 
-See it in action in the daily [Poople](https://pooplegame.com/).
+1. You start on **WORD**. Type a four-letter word that differs from the current word by exactly one letter.
+2. Keep climbing until you reach **RUNG**.
+3. Try to match **par**, the fewest steps possible. For this puzzle, par is **5**.
 
----
+Changed letters are highlighted on each rung. Use **Undo** to step back, or **Show solution** to reveal one shortest ladder.
 
-## Features
+## Changing the puzzle
 
-- Zero runtime dependencies
-- Full TypeScript types included, ships as ESM
-- Bring-your-own-dictionary: no bundled word list, works with any language or domain
-- Single shortest path via BFS
-- All shortest paths via multi-parent BFS with an optional cap
-- Whole-graph distance map for computing "par" scores across an entire puzzle set
-
-## Install
-
-```bash
-npm i poople
-```
-
-```bash
-pnpm add poople
-```
-
-```bash
-yarn add poople
-```
-
-## Quick start
+The start and goal words live in [`site/config.ts`](./site/config.ts):
 
 ```typescript
-import { buildDictionary, shortestPath, WordLadder } from "poople";
-
-// Build a dictionary from any iterable of strings.
-const words = ["cold", "cord", "card", "ward", "warm", "bold", "bard"];
-const dict = buildDictionary(words);
-
-// Find the shortest word ladder between two words.
-const path = shortestPath("cold", "warm", dict);
-console.log(path);
-// => ["cold", "cord", "card", "ward", "warm"]
-
-// Or use the WordLadder class for an ergonomic, stateful wrapper.
-const ladder = new WordLadder(words);
-
-console.log(ladder.shortestPath("cold", "warm"));
-// => ["cold", "cord", "card", "ward", "warm"]
-
-// Compute the distance from every reachable word to a target.
-// Useful for setting a "par" score for the whole puzzle set.
-const distances = ladder.distancesTo("warm");
-console.log(distances.get("cold")); // => 4
-console.log(distances.get("cord")); // => 3
+export const GOAL = "rung";
+export const START = "word";
 ```
 
-## API reference
+Edit them, commit, and push to `main`. The site rebuilds and redeploys automatically in about a minute. Par is computed from the word list, so pick a start word that can actually reach the goal. If no ladder exists, the game won't load.
 
-### Types
+## Word list
 
-| Export | Description |
-|---|---|
-| `Dictionary` | `ReadonlySet<string>`, the normalized set of legal words |
+Guesses are checked against [`site/words.txt`](./site/words.txt), about 5,600 four-letter Scrabble words. The file is whitespace-separated and case-insensitive, so you can paste in a new list as-is. A small blocklist in [`site/build.mjs`](./site/build.mjs) filters out offensive words.
 
-### Functions
+## Development
 
-#### `buildDictionary(words: Iterable<string>): Dictionary`
+Requires Node 18+ and pnpm (or run `corepack pnpm` if pnpm isn't installed).
 
-Normalizes each word (trim + lowercase), drops empty strings, and returns a `ReadonlySet<string>`.
-
-#### `getNeighbors(word: string, dict: Dictionary): string[]`
-
-Returns every word in `dict` that differs from `word` by exactly one letter. Input is lowercased automatically.
-
-#### `oneLetterDifferent(a: string, b: string): boolean`
-
-Returns `true` if `a` and `b` are the same length and differ in exactly one character position. Case-insensitive.
-
-#### `isValidStep(guess: string, prev: string, dict: Dictionary): boolean`
-
-Returns `true` if `guess` is present in `dict` and differs from `prev` by exactly one letter. Useful for validating player moves in a word ladder game.
-
-#### `shortestPath(start: string, end: string, dict: Dictionary): string[] | null`
-
-BFS shortest path from `start` to `end`. Returns an inclusive array of words (both endpoints included), or `null` if either word is absent from the dictionary or no ladder exists. Returns `[start]` when `start === end`. All words in the result are lowercase.
-
-#### `enumerateShortestPaths(start: string, end: string, dict: Dictionary, cap?: number): string[][]`
-
-Returns all shortest ladders from `start` to `end`, up to `cap` results (default `20`). Uses multi-parent BFS to discover every shortest-path predecessor, then backtracks to reconstruct all routes. Returns an empty array if either word is unknown or the pair is unreachable. Returns `[[start]]` when `start === end`.
-
-#### `computeDistances(target: string, dict: Dictionary): Map<string, number>`
-
-BFS flood from `target` outward across the entire word graph. Returns a `Map<string, number>` where each key is a word reachable from `target` and the value is the minimum number of steps to reach `target`. The target itself maps to `0`. Words unreachable from `target` are absent from the map. Use this to pre-compute the "par" (optimal step count) for every possible puzzle start word in a given dictionary.
-
-### Class: `WordLadder`
-
-An ergonomic wrapper that holds a dictionary and exposes all operations as methods.
-
-```typescript
-const ladder = new WordLadder(words: Iterable<string>)
+```bash
+pnpm install
+pnpm run site:build   # builds the game into site/dist
+pnpm test             # runs the engine's tests
 ```
 
-| Member | Signature | Description |
-|---|---|---|
-| `size` | `number` | Number of words in the dictionary |
-| `has` | `(word: string) => boolean` | Whether `word` is in the dictionary (case-insensitive) |
-| `neighbors` | `(word: string) => string[]` | Words one letter away from `word` |
-| `isValidStep` | `(guess: string, prev: string) => boolean` | Whether `guess` is a legal next step from `prev` |
-| `shortestPath` | `(start: string, end: string) => string[] \| null` | BFS shortest ladder, or `null` |
-| `allShortestPaths` | `(start: string, end: string, cap?: number) => string[][]` | All shortest ladders, up to `cap` (default 20) |
-| `distancesTo` | `(target: string) => Map<string, number>` | BFS distance map from every reachable word to `target` |
+To preview locally, serve `site/dist` with any static file server, for example `npx serve site/dist`.
+
+## Deployment
+
+[`.github/workflows/pages.yml`](./.github/workflows/pages.yml) builds `site/dist` and publishes it to GitHub Pages on every push to `main`. In the repo settings, **Settings → Pages → Source** must be set to **GitHub Actions**.
 
 ## How it works
 
-The library models the word puzzle as a graph where each node is a word and two nodes share an edge when the words differ by exactly one letter. `shortestPath` runs standard BFS over this graph, which guarantees the shortest-step solution.
+Rungle is built on the [poople](https://github.com/horushe93/poople) word ladder engine, a small TypeScript library that lives in [`src/`](./src). It treats every word as a node in a graph, with an edge between words that differ by one letter:
 
-`enumerateShortestPaths` uses multi-parent BFS: during layer-by-layer expansion, every node records all predecessors that reach it at the minimum depth, not just the first one found. After the layer containing the target word is fully expanded, the algorithm backtracks through the parent map with a depth-first traversal to reconstruct all distinct shortest routes. Collection stops once `cap` paths are gathered, preventing exponential blowup on highly connected graphs.
+- `isValidStep` checks each guess.
+- `distancesTo("rung")` runs one breadth-first search from the goal to compute par.
+- `shortestPath` finds the ladder shown by **Show solution**.
 
-`computeDistances` is a single BFS flood starting from the target word. Because BFS expands level by level, every word is assigned its exact minimum distance the first time it is reached. One call covers the entire connected component, making it efficient for bulk "par" precomputation.
-
-## Live demo
-
-This engine powers the daily [Poople word ladder game](https://pooplegame.com/), a four-letter word ladder game with a new puzzle every day.
+See the [upstream README](https://github.com/horushe93/poople#readme) for the full engine API.
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](./LICENSE). The word ladder engine is by horushe93.

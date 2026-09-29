@@ -20,9 +20,6 @@ importers:
       vitest:
         specifier: ^2.1.0
         version: 2.1.9
-      wordlist-english:
-        specifier: ^1.2.1
-        version: 1.2.1
 
 packages:
 
@@ -687,9 +684,6 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
-  wordlist-english@1.2.1:
-    resolution: {integrity: sha512-vaiQQiu95UeON0WZFtiTrWfZmIiUd2rhrhMCBeEzwq3oTVzHCX8naGCqv/smSspE9kH2sN+E8lZyV0JZjqSzGw==}
-
 snapshots:
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -1186,5 +1180,3 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
-
-  wordlist-english@1.2.1: {}
