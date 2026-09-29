@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poople — Climb to RUNG</title>
+  <style>
+    :root {
+      --bg: #faf8f4; --fg: #22201c; --muted: #6f6a61; --line: #ddd7cc;
+      --tile: #fff; --accent: #c2410c; --good: #15803d; --bad: #b91c1c;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1917; --fg: #eeeae3; --muted: #a39e94; --line: #3a3833;
+        --tile: #262522; --accent: #fb923c; --good: #4ade80; --bad: #f87171;
+        color-scheme: dark;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    main { max-width: 26rem; margin: 0 auto; padding: 2rem 1rem 3rem; }
+    h1 { margin: 0; font-size: 2rem; letter-spacing: 0.02em; }
+    .sub { margin: 0.25rem 0 1.5rem; color: var(--muted); }
+    .sub strong { color: var(--fg); text-transform: uppercase; }
+    .stats { display: flex; gap: 1.5rem; margin-bottom: 1rem; color: var(--muted); font-size: 0.9rem; }
+    .stats b { color: var(--fg); font-size: 1.1rem; }
+    #rungs { list-style: none; padding: 0; margin: 0 0 1.25rem; display: grid; gap: 0.4rem; }
+    .rung { display: flex; gap: 0.35rem; justify-content: center; }
+    .tile {
+      width: 3rem; height: 3rem; display: grid; place-items: center;
+      background: var(--tile); border: 2px solid var(--line); border-radius: 0.4rem;
+      font-weight: 700; font-size: 1.4rem; text-transform: uppercase;
+    }
+    .tile.changed { border-color: var(--accent); color: var(--accent); }
+    .rung.start .tile { border-color: var(--fg); }
+    .rung.goal .tile { border-color: var(--good); color: var(--good); }
+    .rung.ghost .tile { border-style: dashed; color: var(--muted); background: transparent; }
+    .rung.target { opacity: 0.55; }
+    form { display: flex; gap: 0.5rem; }
+    input {
+      flex: 1; min-width: 0; padding: 0.6rem 0.8rem; font: inherit; font-size: 1.1rem;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      background: var(--tile); color: var(--fg); border: 2px solid var(--line); border-radius: 0.4rem;
+    }
+    input:focus { outline: none; border-color: var(--accent); }
+    button {
+      padding: 0.6rem 1rem; font: inherit; font-weight: 600; cursor: pointer;
+      background: var(--fg); color: var(--bg); border: 0; border-radius: 0.4rem;
+    }
+    button.secondary { background: transparent; color: var(--fg); border: 2px solid var(--line); }
+    button:disabled { opacity: 0.4; cursor: default; }
+    .actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+    #message { min-height: 1.5em; margin: 0.75rem 0 0; }
+    #message.error { color: var(--bad); }
+    #message.win { color: var(--good); font-weight: 600; }
+    footer { margin-top: 2.5rem; font-size: 0.8rem; color: var(--muted); }
+    footer a { color: inherit; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Poople</h1>
+    <p class="sub">Climb from <strong id="start"></strong> to <strong id="goal"></strong>, changing one letter at a time.</p>
+    <div class="stats">
+      <span>Steps <b id="steps">0</b></span>
+      <span>Par <b id="par"></b></span>
+    </div>
+    <ol id="rungs" aria-live="polite"></ol>
+    <form id="guess-form" autocomplete="off">
+      <input id="guess" maxlength="4" aria-label="Next word" placeholder="next word" autocapitalize="off" spellcheck="false">
+      <button type="submit">Go</button>
+    </form>
+    <div class="actions">
+      <button type="button" id="undo" class="secondary">Undo</button>
+      <button type="button" id="reveal" class="secondary">Show solution</button>
+    </div>
+    <p id="message" role="status"></p>
+    <footer>Built on the <a href="https://github.com/horushe93/poople">poople</a> word ladder engine.</footer>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
